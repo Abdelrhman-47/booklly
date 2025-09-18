@@ -1,8 +1,8 @@
 import 'package:booklly/core/routing/app_routs.dart';
-import 'package:booklly/features/presintation/views/home_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../features/home/presintation/views/home_view.dart';
 import '../../features/splash/presintation/views/splash_view.dart';
 
 class AppRouter {

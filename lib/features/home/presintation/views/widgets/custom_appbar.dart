@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import '../../../../core/assets.dart';
+import '../../../../../core/assets.dart';
 
 class CustomAppbar extends StatelessWidget {
   const CustomAppbar({super.key});
