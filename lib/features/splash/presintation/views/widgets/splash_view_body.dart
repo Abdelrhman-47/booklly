@@ -1,3 +1,4 @@
+import 'package:booklly/core/routing/app_routs.dart';
 import 'package:flutter/material.dart';
 import '../../../../../core/assets.dart';
 
@@ -12,10 +13,7 @@ class _SplashViewBodyState extends State<SplashViewBody>
     with SingleTickerProviderStateMixin {
   late AnimationController animationController;
   late Animation<Offset> animationSlider;
-
-  @override
-  void initState() {
-    super.initState();
+  void initSlidingAnimation() {
     animationController = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 1), // خليتها ثانيتين
@@ -23,7 +21,7 @@ class _SplashViewBodyState extends State<SplashViewBody>
 
     animationSlider =
         Tween<Offset>(
-          begin: const Offset(0, 1), // يبدأ من تحت
+          begin: const Offset(0, 3), // يبدأ من تحت
           end: Offset.zero, // يوصل مكانه الطبيعي
         ).animate(
           CurvedAnimation(
@@ -32,7 +30,20 @@ class _SplashViewBodyState extends State<SplashViewBody>
           ),
         );
 
-    animationController.forward(); // تشغيل الأنيميشن
+    animationController.forward();
+  }
+
+  void navigationToHome() {
+    Future.delayed(Duration(seconds: 2), () {
+      Navigator.pushReplacementNamed(context, AppRouts.home);
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    initSlidingAnimation();
+    navigationToHome();
   }
 
   @override
