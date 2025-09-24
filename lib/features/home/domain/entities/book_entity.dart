@@ -1,4 +1,4 @@
-class BookEntity {
+class BookEntity  {
   final String bookId;
   final String? image;
   final String title;
@@ -6,5 +6,15 @@ class BookEntity {
   final num? price;
   final num? rating;
 
-  BookEntity({required this.bookId, required this.image, required this.title, required this.authorName, required this.price, required this.rating});
+  const BookEntity({
+    required this.bookId,
+    this.image,
+    required this.title,
+    this.authorName,
+    this.price,
+    this.rating,
+  });
+
+  @override
+  List<Object?> get props => [bookId, image, title, authorName, price, rating];
 }
