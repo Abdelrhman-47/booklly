@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../features/home/presintation/views/home_view.dart';
+import '../../features/home/presintation/views/widgets/book_details_view_body.dart';
 import '../../features/splash/presintation/views/splash_view.dart';
 
 class AppRouter {
@@ -10,8 +11,10 @@ class AppRouter {
     switch (settings.name) {
       case AppRouts.splash:
         return MaterialPageRoute(builder: (_) => const SplashView());
-        case AppRouts.home:
+      case AppRouts.home:
         return MaterialPageRoute(builder: (_) => const HomeView());
+      case AppRouts.bookDetails:
+        return MaterialPageRoute(builder: (_) => const BookDetailsViewBody());
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(body: Center(child: Text('404 Not Found'))),

@@ -21,9 +21,8 @@ class HomeViewBody extends StatelessWidget {
           ),
         ),
 
-           BestSellerListView()
-
-      ]
+        BestSellerListView(),
+      ],
     );
   }
 }

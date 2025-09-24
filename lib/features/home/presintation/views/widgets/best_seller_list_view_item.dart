@@ -1,3 +1,4 @@
+import 'package:booklly/core/routing/app_routs.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -5,7 +6,6 @@ import '../../../../../constats.dart';
 import '../../../../../core/assets.dart';
 import '../../../../../core/utiles/styles.dart';
 import 'book_rating.dart';
-
 
 class BookListViewItem extends StatelessWidget {
   const BookListViewItem({super.key});
@@ -16,7 +16,7 @@ class BookListViewItem extends StatelessWidget {
       padding: const EdgeInsets.all(8.0),
       child: GestureDetector(
         onTap: () {
-
+          Navigator.pushNamed(context, AppRouts.bookDetails);
         },
         child: SizedBox(
           height: 125,
@@ -26,19 +26,16 @@ class BookListViewItem extends StatelessWidget {
                 aspectRatio: 2.5 / 4,
                 child: Container(
                   decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                      color: Colors.red,
-                      image: const DecorationImage(
-                        fit: BoxFit.fill,
-                        image: AssetImage(
-                          AssetsData.testImage,
-                        ),
-                      )),
+                    borderRadius: BorderRadius.circular(8),
+                    color: Colors.red,
+                    image: const DecorationImage(
+                      fit: BoxFit.fill,
+                      image: AssetImage(AssetsData.testImage),
+                    ),
+                  ),
                 ),
               ),
-              const SizedBox(
-                width: 30,
-              ),
+              const SizedBox(width: 30),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -54,16 +51,9 @@ class BookListViewItem extends StatelessWidget {
                         ),
                       ),
                     ),
-                    const SizedBox(
-                      height: 3,
-                    ),
-                    const Text(
-                      'J.K. Rowling',
-                      style: Styles.textStyle14,
-                    ),
-                    const SizedBox(
-                      height: 3,
-                    ),
+                    const SizedBox(height: 3),
+                    const Text('J.K. Rowling', style: Styles.textStyle14),
+                    const SizedBox(height: 3),
                     Row(
                       children: [
                         Text(
