@@ -1,9 +1,11 @@
 import 'package:booklly/core/erreors/failur.dart';
+import 'package:booklly/core/erreors/failure_handler.dart';
 import 'package:booklly/features/home/data/data_sources/home_local_data_source.dart';
 import 'package:booklly/features/home/data/data_sources/home_remot_data_source.dart';
 import 'package:booklly/features/home/domain/entities/book_entity.dart';
 import 'package:booklly/features/home/domain/repos/home_repo.dart';
 import 'package:dartz/dartz.dart';
+import 'package:dio/dio.dart';
 
 class RepoImplement extends HomeRepo {
   RepoImplement({
@@ -13,7 +15,7 @@ class RepoImplement extends HomeRepo {
   HomeLocalDataSource homeLocalDataSource;
   HomeRemoteDataSource homeRemoteDataSource;
   @override
-  Future<Either<Failur, List<BookEntity>>> fetchFeaturedBooks() async {
+  Future<Either<Failure, List<BookEntity>>> fetchFeaturedBooks() async {
     try {
       final cachedBooks = await homeLocalDataSource.cashedFeaturedBooks();
 
@@ -22,13 +24,15 @@ class RepoImplement extends HomeRepo {
         return right(remoteBooks);
       }
       return right(cachedBooks);
+    } on DioException catch (e) {
+      return Left(FailureHandler.handleDioException(e));
     } catch (e) {
-      return left(Failur());
+      return left(UnknownFailure('Unexpected error: ${e.toString()}'));
     }
   }
 
   @override
-  Future<Either<Failur, List<BookEntity>>> fetchNewestBooks() async {
+  Future<Either<Failure, List<BookEntity>>> fetchNewestBooks() async {
     try {
       final cachedBooks = await homeLocalDataSource.fetchNewestBooks();
 
@@ -37,8 +41,10 @@ class RepoImplement extends HomeRepo {
         return right(cachedBooks);
       }
       return right(cachedBooks);
+    } on DioException catch (e) {
+      return Left(FailureHandler.handleDioException(e));
     } catch (e) {
-      return left(Failur());
+      return left(UnknownFailure('Unexpected error: ${e.toString()}'));
     }
   }
 }
