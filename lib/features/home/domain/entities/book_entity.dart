@@ -15,6 +15,5 @@ class BookEntity  {
     this.rating,
   });
 
-  @override
   List<Object?> get props => [bookId, image, title, authorName, price, rating];
 }
