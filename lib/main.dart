@@ -1,12 +1,14 @@
 import 'package:booklly/core/routing/app_router.dart';
 import 'package:booklly/core/routing/app_routs.dart';
+import 'package:booklly/core/utiles/hive_init.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'constats.dart';
-import 'features/splash/presintation/views/splash_view.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await HiveInit.init();
   runApp(const Bookly());
 }
 
