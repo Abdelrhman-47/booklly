@@ -32,7 +32,6 @@ class BookModel extends BookEntity {
       items: (json['items'] as List<dynamic>?)
           ?.map((v) => Items.fromJson(v))
           .toList(),
-      // القيم الأساسية اللي الابلكيشن هيستخدمها 👇
       bookId: json['id'] ?? '',
       image: json['volumeInfo']?['imageLinks']?['thumbnail'],
       title: json['volumeInfo']?['title'] ?? '',
@@ -46,9 +45,7 @@ class BookModel extends BookEntity {
   }
 }
 
-/// =======================
-/// 📌 Items
-/// =======================
+
 class Items {
   final String? id;
   final VolumeInfo? volumeInfo;
@@ -69,9 +66,7 @@ class Items {
   }
 }
 
-/// =======================
-/// 📌 Volume Info
-/// =======================
+
 class VolumeInfo {
   final String? title;
   final List<String>? authors;
@@ -99,9 +94,7 @@ class VolumeInfo {
   }
 }
 
-/// =======================
-/// 📌 Sale Info
-/// =======================
+
 class SaleInfo {
   final ListPrice? listPrice;
 
@@ -116,9 +109,7 @@ class SaleInfo {
   }
 }
 
-/// =======================
-/// 📌 List Price
-/// =======================
+
 class ListPrice {
   final num? amount;
 
@@ -129,9 +120,7 @@ class ListPrice {
   }
 }
 
-/// =======================
-/// 📌 Image Links
-/// =======================
+  
 class ImageLinks {
   final String? thumbnail;
 
