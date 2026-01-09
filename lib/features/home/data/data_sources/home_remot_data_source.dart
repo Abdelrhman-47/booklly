@@ -19,21 +19,21 @@ class HomeRemoteDataSourceImpl extends HomeRemoteDataSource {
   @override
   Future<List<BookEntity>> fetchFeaturedBooks() async {
     var data = await apiService.get(
-      endPoint: 'volumes?Filtering=free-ebooks&q=programming',
+      endPoint: 'volumes?Filtering=free-ebooks&q=computer science',
     );
 
     List<BookEntity> books = getBooksList(data);
-    await Hive.box(kFeaturedBox).addAll(books);
+    await Hive.box<BookEntity>(kFeaturedBox).addAll(books);
     return books;
   }
 
   @override
   Future<List<BookEntity>> fetchNewestBooks() async {
     var data = await apiService.get(
-      endPoint: 'volumes?Filtering=free-ebooks&Sorting=newest&q=programming',
+      endPoint: 'volumes?Filtering=free-ebooks&Sorting=newest',
     );
     List<BookEntity> books = getBooksList(data);
-        await Hive.box(kNewestBox).addAll(books);
+    await Hive.box<BookEntity>(kNewestBox).addAll(books);
 
     return books;
   }

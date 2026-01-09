@@ -1,4 +1,5 @@
 import 'package:booklly/core/routing/app_routs.dart';
+import 'package:booklly/features/home/domain/entities/book_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -8,8 +9,8 @@ import '../../../../../core/utiles/styles.dart';
 import 'book_rating.dart';
 
 class BookListViewItem extends StatelessWidget {
-  const BookListViewItem({super.key});
-
+  const BookListViewItem({super.key, required this.book});
+final BookEntity book;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -28,9 +29,9 @@ class BookListViewItem extends StatelessWidget {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(8),
                     color: Colors.red,
-                    image: const DecorationImage(
+                    image:  DecorationImage(
                       fit: BoxFit.fill,
-                      image: AssetImage(AssetsData.testImage),
+                      image: NetworkImage(book.image!),
                     ),
                   ),
                 ),
@@ -43,7 +44,7 @@ class BookListViewItem extends StatelessWidget {
                     SizedBox(
                       width: MediaQuery.of(context).size.width * .5,
                       child: Text(
-                        'Harry Potter and the Goblet of Fire',
+                        book.title,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                         style: Styles.textStyle20.copyWith(
@@ -52,18 +53,18 @@ class BookListViewItem extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 3),
-                    const Text('J.K. Rowling', style: Styles.textStyle14),
+                     Text('${book.authorName}', style: Styles.textStyle14),
                     const SizedBox(height: 3),
                     Row(
                       children: [
                         Text(
-                          '19.99 €',
+                          '${book.price}\$',
                           style: Styles.textStyle20.copyWith(
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                         const Spacer(),
-                        const BookRating(),
+                        BookRating(book: book),
                       ],
                     ),
                   ],

@@ -16,7 +16,7 @@ class BookDetailsViewBody extends StatelessWidget {
         child: Column(
           children: [
             CustomeAppbarDetails(),
-            SizedBox(height: 300, child: CustomListViewItem()),
+      //      SizedBox(height: 300, child: CustomListViewItem(imageUrl: '',)),
             SizedBox(height: 43),
             Text(
               'The Jungle Book',
@@ -34,7 +34,7 @@ class BookDetailsViewBody extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 18),
-            const BookRating(mainAxisAlignment: MainAxisAlignment.center),
+          //  const BookRating(mainAxisAlignment: MainAxisAlignment.center, book: null,),
             const SizedBox(height: 37),
             BooksAction(),
             SizedBox(height: 40,),
@@ -60,7 +60,7 @@ class SimilerBooksListView extends StatelessWidget {
     itemBuilder: (ctx, index) {
     return Padding(
     padding: const EdgeInsets.symmetric(horizontal: 10),
-    child: CustomListViewItem(),
+   // child: CustomListViewItem(),
     );
   }));
 }

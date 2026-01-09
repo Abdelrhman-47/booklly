@@ -11,8 +11,12 @@ class HiveInit{
   
    
 
-    await Hive.openBox<BookEntity>(kFeaturedBox);
-    await Hive.openBox<BookEntity>(kNewestBox);
+    if (!Hive.isBoxOpen(kFeaturedBox)) {
+      await Hive.openBox<BookEntity>(kFeaturedBox);
+    }
+    if (!Hive.isBoxOpen(kNewestBox)) {
+      await Hive.openBox<BookEntity>(kNewestBox);
+    }
    
 
   }

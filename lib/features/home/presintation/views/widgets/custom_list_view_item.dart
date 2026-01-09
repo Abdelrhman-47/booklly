@@ -3,8 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class CustomListViewItem extends StatelessWidget {
-  const CustomListViewItem({super.key});
-
+  const CustomListViewItem({super.key, required this.imageUrl});
+  final String imageUrl;
   @override
   Widget build(BuildContext context) {
     return AspectRatio(
@@ -12,7 +12,7 @@ class CustomListViewItem extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(borderRadius: BorderRadius.circular(18),
           color: Colors.orange,
-          image: DecorationImage(image: AssetImage(AssetsData.testImage)),
+          image: DecorationImage(image: NetworkImage(imageUrl),fit: BoxFit.cover),
         ),
       ),
     );
