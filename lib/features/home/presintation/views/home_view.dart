@@ -10,7 +10,7 @@ class HomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => Di.sl<FeatuerBookCubit>()..featchFeatueredBooks(),
+      create: (context) => Di.sl.get<FeatuerBookCubit>()..featchFeatueredBooks(),
 
       child: Scaffold(body: HomeViewBody()),
     );
