@@ -9,8 +9,7 @@ import '../../../../../core/utiles/styles.dart';
 import 'book_rating.dart';
 
 class BookListViewItem extends StatelessWidget {
-  const BookListViewItem({super.key, required this.book});
-final BookEntity book;
+  const BookListViewItem({super.key});
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -31,7 +30,7 @@ final BookEntity book;
                     color: Colors.red,
                     image:  DecorationImage(
                       fit: BoxFit.fill,
-                      image: NetworkImage(book.image!),
+                      image: NetworkImage("as"),
                     ),
                   ),
                 ),
@@ -44,7 +43,7 @@ final BookEntity book;
                     SizedBox(
                       width: MediaQuery.of(context).size.width * .5,
                       child: Text(
-                        book.title,
+                        "asa",
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                         style: Styles.textStyle20.copyWith(
@@ -53,18 +52,18 @@ final BookEntity book;
                       ),
                     ),
                     const SizedBox(height: 3),
-                     Text('${book.authorName}', style: Styles.textStyle14),
+                     Text('${"saas"}', style: Styles.textStyle14),
                     const SizedBox(height: 3),
                     Row(
                       children: [
                         Text(
-                          '${book.price}\$',
+                          '${2}\$',
                           style: Styles.textStyle20.copyWith(
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                         const Spacer(),
-                        BookRating(book: book),
+                        BookRating(),
                       ],
                     ),
                   ],

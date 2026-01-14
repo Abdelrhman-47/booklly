@@ -16,40 +16,26 @@ class HomeViewBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<FeatuerBookCubit, FeatuerBookState>(
-      builder: (context, state) {
-        return state.when(
-          initial: () {
-           return SizedBox();
-          },
-          loading: () {
-            return const Center(child: CircularProgressIndicator());
-          },
-          loaded: (books) {
-            return CustomScrollView(
-              slivers: [
-                SliverToBoxAdapter(child: CustomAppbar()),
-                SliverToBoxAdapter(child: FeaturedBooksListView(books: books)),
-                SliverToBoxAdapter(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 20,
-                      horizontal: 20,
-                    ),
-                    child: Text('Best Seller', style: Styles.textStyle30),
-                  ),
+   
+        return CustomScrollView(
+          slivers: [
+            SliverToBoxAdapter(child: CustomAppbar()),
+            SliverToBoxAdapter(child: FeaturedBooksListView()),
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 20,
+                  horizontal: 20,
                 ),
-
-                BestSellerListView(books: books),
-              ],
-            );
-          },
-          error: (error) {final m= error.message;
-          log(" Error Message: $m ");
-            return  Center(child: Text(m));
-          },
+                child: Text('Best Seller', style: Styles.textStyle30),
+              ),
+            ),
+    
+            BestSellerListView(),
+          ],
         );
-      },
-    );
+      
+      
+    
   }
 }

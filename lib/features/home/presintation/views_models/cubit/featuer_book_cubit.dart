@@ -6,8 +6,8 @@ class FeatuerBookCubit extends Cubit<FeatuerBookState> {
   FeatuerBookCubit(this.featuredBooksUseeCase)
     : super(const FeatuerBookState.initial());
   FetchFeaturedBooksUseeCase featuredBooksUseeCase;
-  void featchFeatueredBooks() async {
-    final result = await featuredBooksUseeCase.call();
+  void featchFeatueredBooks({int pageNumbr=0}) async {
+    final result = await featuredBooksUseeCase.call(pageNumbr );
     result.fold(
       (failure) => emit(FeatuerBookState.error(failure)),
       (books) => emit(FeatuerBookState.loaded(books)),

@@ -1,24 +1,73 @@
+import 'package:booklly/core/erreors/failur.dart';
 import 'package:booklly/features/home/domain/entities/book_entity.dart';
+import 'package:booklly/features/home/presintation/views_models/cubit/featuer_book_cubit.dart';
+import 'package:booklly/features/home/presintation/views_models/cubit/featuer_book_state.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'custom_list_view_item.dart';
 
-class FeaturedBooksListView extends StatelessWidget {
-  const FeaturedBooksListView({super.key, required this.books});
-final List <BookEntity> books;
+class FeaturedBooksListView extends StatefulWidget {
+  const FeaturedBooksListView({super.key,});
+
+  @override
+  State<FeaturedBooksListView> createState() => _FeaturedBooksListViewState();
+}
+
+class _FeaturedBooksListViewState extends State<FeaturedBooksListView> {
+  ScrollController _scrollController = ScrollController();
+  bool isLoadingMore = false;
+
+  @override
+  void initState() {
+    _scrollController.addListener(cheackToUpdate);
+    super.initState();
+  }
+
+  void cheackToUpdate() {
+    double currentPositio = _scrollController.position.pixels;
+    double endPosition = _scrollController.position.maxScrollExtent * .7;
+    if (currentPositio >= endPosition && !isLoadingMore) {
+      isLoadingMore = true;
+      context.read<FeatuerBookCubit>().featchFeatueredBooks();
+      isLoadingMore = false;
+    }
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return   SizedBox(
+    return SizedBox(
       height: MediaQuery.of(context).size.height * .25,
-      child: ListView.builder(scrollDirection: Axis.horizontal,
-      itemCount: books.length,
-        itemBuilder: (ctx, index) {
-          final book =books[index];
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: CustomListViewItem(imageUrl: book.image!,),
+      child: BlocBuilder<FeatuerBookCubit, FeatuerBookState>(
+        builder: (context, state) {
+          return state.when(
+            initial: ()=>  SizedBox(),
+            loading: ()=> const Center(child: CircularProgressIndicator()),
+            loaded: (List<BookEntity> books) {
+              return ListView.builder(
+      
+                controller: _scrollController,
+                scrollDirection: Axis.horizontal,
+                itemCount: books.length,
+                itemBuilder: (ctx, index) {
+                  final book = books[index];
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: CustomListViewItem(imageUrl: book.image!),
+                  );
+                },
+              );
+            },
+            error: (Failure error)  =>Center(child: Text('Error is $error'))
+            
           );
-          
         },
       ),
     );

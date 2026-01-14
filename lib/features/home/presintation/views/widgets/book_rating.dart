@@ -7,9 +7,8 @@ import '../../../../../features/home/domain/entities/book_entity.dart';
 class BookRating extends StatelessWidget {
   const BookRating({
     super.key,
-    this.mainAxisAlignment = MainAxisAlignment.start, required this.book,
+    this.mainAxisAlignment = MainAxisAlignment.start,
   });
-final BookEntity book;
   final MainAxisAlignment mainAxisAlignment;
   @override
   Widget build(BuildContext context) {
@@ -21,25 +20,16 @@ final BookEntity book;
           size: 14,
           color: Color(0xffFFDD4F),
         ),
-        const SizedBox(
-          width: 6.3,
-        ),
-         Text(
-          '${book.rating}',
-          style: Styles.textStyle16,
-        ),
-        const SizedBox(
-          width: 5,
-        ),
+        const SizedBox(width: 6.3),
+        Text('${10}', style: Styles.textStyle16),
+        const SizedBox(width: 5),
         Opacity(
           opacity: .5,
           child: Text(
-            '(${book.price})',
-            style: Styles.textStyle14.copyWith(
-              fontWeight: FontWeight.w600,
-            ),
+            '(${20})',
+            style: Styles.textStyle14.copyWith(fontWeight: FontWeight.w600),
           ),
-        )
+        ),
       ],
     );
   }
