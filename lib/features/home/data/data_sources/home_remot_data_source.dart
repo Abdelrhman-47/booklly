@@ -6,7 +6,7 @@ import '../../domain/entities/book_entity.dart';
 import '../models/book_model.dart';
 
 abstract class HomeRemoteDataSource {
-  Future<List<BookEntity>> fetchFeaturedBooks({int pageNumber=0});
+  Future<List<BookEntity>> fetchFeaturedBooks({int pageNumber = 0});
   Future<List<BookEntity>> fetchNewestBooks();
   Future<List<BookEntity>> fetchSimilarBooks({required String category});
 }
@@ -17,13 +17,17 @@ class HomeRemoteDataSourceImpl extends HomeRemoteDataSource {
   HomeRemoteDataSourceImpl(this.apiService);
 
   @override
-  Future<List<BookEntity>> fetchFeaturedBooks({int pageNumber=0}) async {
+  Future<List<BookEntity>> fetchFeaturedBooks({int pageNumber = 0}) async {
     var data = await apiService.get(
       endPoint: 'volumes?&q=computer science&startIndex=${pageNumber * 10}',
     );
 
     List<BookEntity> books = getBooksList(data);
-    await Hive.box<BookEntity>(kFeaturedBox).addAll(books);
+    var box = Hive.box<BookEntity>(kFeaturedBox);
+    if (pageNumber == 0) {
+      await box.clear();
+    }
+    await box.addAll(books);
     return books;
   }
 

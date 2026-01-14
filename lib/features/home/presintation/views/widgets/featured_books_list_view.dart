@@ -9,7 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'custom_list_view_item.dart';
 
 class FeaturedBooksListView extends StatefulWidget {
-  const FeaturedBooksListView({super.key,});
+  const FeaturedBooksListView({super.key});
 
   @override
   State<FeaturedBooksListView> createState() => _FeaturedBooksListViewState();
@@ -19,18 +19,22 @@ class _FeaturedBooksListViewState extends State<FeaturedBooksListView> {
   ScrollController _scrollController = ScrollController();
   bool isLoadingMore = false;
 
+  int pageNumbr = 1;
+
   @override
   void initState() {
     _scrollController.addListener(cheackToUpdate);
     super.initState();
   }
 
-  void cheackToUpdate() {
+  void cheackToUpdate() async {
     double currentPositio = _scrollController.position.pixels;
     double endPosition = _scrollController.position.maxScrollExtent * .7;
     if (currentPositio >= endPosition && !isLoadingMore) {
       isLoadingMore = true;
-      context.read<FeatuerBookCubit>().featchFeatueredBooks();
+      await context.read<FeatuerBookCubit>().featchFeatueredBooks(
+        pageNumbr: pageNumbr++,
+      );
       isLoadingMore = false;
     }
   }
@@ -48,11 +52,10 @@ class _FeaturedBooksListViewState extends State<FeaturedBooksListView> {
       child: BlocBuilder<FeatuerBookCubit, FeatuerBookState>(
         builder: (context, state) {
           return state.when(
-            initial: ()=>  SizedBox(),
-            loading: ()=> const Center(child: CircularProgressIndicator()),
+            initial: () => SizedBox(),
+            loading: () => const Center(child: CircularProgressIndicator()),
             loaded: (List<BookEntity> books) {
               return ListView.builder(
-      
                 controller: _scrollController,
                 scrollDirection: Axis.horizontal,
                 itemCount: books.length,
@@ -65,8 +68,7 @@ class _FeaturedBooksListViewState extends State<FeaturedBooksListView> {
                 },
               );
             },
-            error: (Failure error)  =>Center(child: Text('Error is $error'))
-            
+            error: (Failure error) => Center(child: Text('Error is $error')),
           );
         },
       ),

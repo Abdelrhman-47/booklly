@@ -6,11 +6,35 @@ class FeatuerBookCubit extends Cubit<FeatuerBookState> {
   FeatuerBookCubit(this.featuredBooksUseeCase)
     : super(const FeatuerBookState.initial());
   FetchFeaturedBooksUseeCase featuredBooksUseeCase;
-  void featchFeatueredBooks({int pageNumbr=0}) async {
-    final result = await featuredBooksUseeCase.call(pageNumbr );
+  Future<void> featchFeatueredBooks({int pageNumbr = 0}) async {
+    if (pageNumbr == 0) {
+      emit(const FeatuerBookState.loading());
+    }
+    final result = await featuredBooksUseeCase.call(pageNumbr);
     result.fold(
-      (failure) => emit(FeatuerBookState.error(failure)),
-      (books) => emit(FeatuerBookState.loaded(books)),
+      (failure) {
+        if (pageNumbr == 0) {
+          emit(FeatuerBookState.error(failure));
+        } else {
+          // For pagination error, we might want to show a snackbar or just keep the old state.
+          // For now, keeping the old state is safer than replacing the whole view with an error.
+          // Ideally, we would have a separate error state for pagination.
+        }
+      },
+      (books) {
+        if (pageNumbr == 0) {
+          emit(FeatuerBookState.loaded(books));
+        } else {
+          state.maybeWhen(
+            loaded: (oldBooks) {
+              emit(FeatuerBookState.loaded([...oldBooks, ...books]));
+            },
+            orElse: () {
+              emit(FeatuerBookState.loaded(books));
+            },
+          );
+        }
+      },
     );
   }
 }

@@ -15,18 +15,22 @@ class RepoImplement extends HomeRepo {
   HomeLocalDataSource homeLocalDataSource;
   HomeRemoteDataSource homeRemoteDataSource;
   @override
-  Future<Either<Failure, List<BookEntity>>> fetchFeaturedBooks({int pageNumber=0})async {
+  Future<Either<Failure, List<BookEntity>>> fetchFeaturedBooks({
+    int pageNumber = 0,
+  }) async {
     try {
-      final cachedBooks = await homeLocalDataSource.cashedFeaturedBooks();
-
-      if (cachedBooks.isEmpty) {
-        final remoteBooks = await homeRemoteDataSource.fetchFeaturedBooks();
-        return right(remoteBooks);
-      }
-      return right(cachedBooks);
-    } on DioException catch (e) {
-      return Left(FailureHandler.handleDioException(e));
+      final remoteBooks = await homeRemoteDataSource.fetchFeaturedBooks(
+        pageNumber: pageNumber,
+      );
+      return right(remoteBooks);
     } catch (e) {
+      final cachedBooks = homeLocalDataSource.cashedFeaturedBooks(pageNumber);
+      if (cachedBooks.isNotEmpty) {
+        return right(cachedBooks);
+      }
+      if (e is DioException) {
+        return left(FailureHandler.handleDioException(e));
+      }
       return left(UnknownFailure('Unexpected error: ${e.toString()}'));
     }
   }
