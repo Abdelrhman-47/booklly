@@ -22,18 +22,18 @@ class FeatuerBookCubit extends Cubit<FeatuerBookState> {
         }
       },
       (books) {
-        if (pageNumbr == 0) {
+        // if (pageNumbr == 0) {
           emit(FeatuerBookState.loaded(books));
-        } else {
-          state.maybeWhen(
-            loaded: (oldBooks) {
-              emit(FeatuerBookState.loaded([...oldBooks, ...books]));
-            },
-            orElse: () {
-              emit(FeatuerBookState.loaded(books));
-            },
-          );
-        }
+        // } else {
+          // state.maybeWhen(
+            // loaded: (oldBooks) {
+              // emit(FeatuerBookState.loaded([...oldBooks, ...books]));
+            // },
+            // orElse: () {
+              // emit(FeatuerBookState.loaded(books));
+            // },
+          // );
+        // }
       },
     );
   }

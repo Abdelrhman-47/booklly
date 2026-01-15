@@ -5,6 +5,7 @@ import 'package:booklly/features/home/presintation/views_models/cubit/featuer_bo
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 import 'custom_list_view_item.dart';
 
@@ -31,11 +32,13 @@ class _FeaturedBooksListViewState extends State<FeaturedBooksListView> {
     double currentPositio = _scrollController.position.pixels;
     double endPosition = _scrollController.position.maxScrollExtent * .7;
     if (currentPositio >= endPosition && !isLoadingMore) {
-      isLoadingMore = true;
-      await context.read<FeatuerBookCubit>().featchFeatueredBooks(
-        pageNumbr: pageNumbr++,
-      );
-      isLoadingMore = false;
+      if (!isLoadingMore) {
+        isLoadingMore = true;
+        await context.read<FeatuerBookCubit>().featchFeatueredBooks(
+          pageNumbr: pageNumbr++,
+        );
+        isLoadingMore = false;
+      }
     }
   }
 
@@ -45,27 +48,44 @@ class _FeaturedBooksListViewState extends State<FeaturedBooksListView> {
     super.dispose();
   }
 
+  List<BookEntity> allBooks = [];
+  bool isLoading = false;
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: MediaQuery.of(context).size.height * .25,
-      child: BlocBuilder<FeatuerBookCubit, FeatuerBookState>(
+      child: BlocConsumer<FeatuerBookCubit, FeatuerBookState>(
+        listener: (context, state) {
+          state.maybeWhen(
+            loaded: (books) => allBooks.addAll(books),
+            orElse: () {},
+            loading: () {
+              isLoading = true;
+            },
+          );
+        },
+
         builder: (context, state) {
           return state.when(
             initial: () => SizedBox(),
             loading: () => const Center(child: CircularProgressIndicator()),
             loaded: (List<BookEntity> books) {
-              return ListView.builder(
-                controller: _scrollController,
-                scrollDirection: Axis.horizontal,
-                itemCount: books.length,
-                itemBuilder: (ctx, index) {
-                  final book = books[index];
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    child: CustomListViewItem(imageUrl: book.image!),
-                  );
-                },
+              return Skeletonizer(
+                enabled: isLoading,
+                child: ListView.builder(
+                  controller: _scrollController,
+                  scrollDirection: Axis.horizontal,
+                  itemCount: allBooks.length,
+                  itemBuilder: (ctx, index) {
+                    final book = allBooks.isEmpty
+                        ? BookEntity(bookId: '', title: '')
+                        : allBooks[index];
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: CustomListViewItem(imageUrl: book.image ?? 'as'),
+                    );
+                  },
+                ),
               );
             },
             error: (Failure error) => Center(child: Text('Error is $error')),
